@@ -9,8 +9,10 @@ export default function Partners() {
         fetchPartners();
     }, []);
 
+    console.log("env varieble: ", "http://localhost:8000/partners")
+
     async function fetchPartners() {
-        const response = await fetch('http://localhost:8000/partners');
+        const response = await fetch(`https://mr-repairr.onrender.com/partners`);
         const data = await response.json();
         setPartners(data);
         setFilteredPartners(data); // Initialize with all partners
