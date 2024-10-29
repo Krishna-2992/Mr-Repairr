@@ -26,7 +26,7 @@ export default function BecomePartner() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/partners', formData);
+            const response = await axios.post('https://mr-repairr.onrender.com/partners', formData);
             if (response.status === 201) {
                 alert('Partner created successfully');
                 navigate('/');
