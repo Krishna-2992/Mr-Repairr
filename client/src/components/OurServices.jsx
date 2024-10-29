@@ -1,9 +1,20 @@
-import plumberImg from '../assets/plumber.png'
-import electricianImg from '../assets/electrician.png'
-import carpenterImg from '../assets/carpenter.png'
-import pestControlImg from '../assets/pest_control.jpg'
+import { Link } from 'react-router-dom'
+
+import plumberImage from '../assets/plumber.png'
+import electricianImage from '../assets/electrician.png'
+import carpenterImage from '../assets/carpenter.png'
+import pestControlImage from '../assets/pest_control.jpg'
 import Card from './Card'
+import data from '../data/data.json'
 export default function OurServices() {
+
+    const professionImages = {
+        Electrician: electricianImage,
+        Plumber: plumberImage,
+        Carpenter: carpenterImage,
+        "Pest Control": pestControlImage,
+    };
+
     return (
         <div id="our-services" className="bg-gray-50 text-gray-800 py-16">
             <div className="text-center mb-12">
@@ -12,26 +23,16 @@ export default function OurServices() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-8">
-                <Card
-                    image={electricianImg}
-                    title="Electrician"
-                    description="Professional electrical solutions for all your needs."
-                />
-                <Card
-                    image={plumberImg}
-                    title="Plumber"
-                    description="Expert plumbing services for your home or office."
-                />
-                <Card
-                    image={carpenterImg}
-                    title="Carpenter"
-                    description="Skilled carpentry for furniture and home improvement."
-                />
-                <Card
-                    image={pestControlImg}
-                    title="Pest Control"
-                    description="Effective pest control services for a safer environment."
-                />
+                {data.professions.map((profession) => (
+                    <Link to={`/contact-partner?profession=${profession.title}`}>
+                        <Card
+                            key={profession.title}
+                            image={professionImages[profession.title]}
+                            title={profession.title}
+                            description={profession.description}
+                        />
+                    </Link>
+                ))}
             </div>
         </div>
     )
