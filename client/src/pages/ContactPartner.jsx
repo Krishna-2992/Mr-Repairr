@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 import { useLocation } from 'react-router-dom';
 import data from '../data/data.json';
 import electricianImage from '../assets/electrician.png'; // Adjust the path
@@ -5,6 +7,7 @@ import plumberImage from '../assets/plumber.png'; // Adjust the path
 import carpenterImage from '../assets/carpenter.png'; // Adjust the path
 import pestControlImage from '../assets/pest_control.jpg'; // Adjust the path
 import { useState } from 'react';
+
 
 export default function ContactPartner() {
     const location = useLocation();
@@ -35,11 +38,62 @@ export default function ContactPartner() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("User Details:", userDetails);
-        // You can send this data to your backend or API here
+        const query = await createQuery();
+        const availablePartners = await getAvailablePartners();
+
+        sendTwilioMsg(query, availablePartners);
     };
+
+    const sendTwilioMsg = async (query, partners) => {
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/twilio`, {
+                query: query,
+                partners: partners
+            })
+            console.log('Twilio response:', response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getAvailablePartners = async () => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/partners?profession=${userDetails.profession}&serviceLocation=${userDetails.address}`);
+            if (response.status == 200) {
+                console.log("available partners:", response.data)
+                return response.data
+            } else {
+                throw new error("Failed to fetch available partners")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const createQuery = async () => {
+        const queryObj = {
+            customerDetails: {
+                name: userDetails.name,
+                contactNumber: userDetails.contactNumber,
+                address: userDetails.address,
+                problemDescription: userDetails.problemDescription
+            },
+            professionRequired: userDetails.profession,
+        }
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/queries`, queryObj);
+            if (response.status === 201) {
+                return response.data;
+            } else {
+                throw new Error('Failed to create query');
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     // Find the profession data from the JSON
     const professionData = data.professions.find(p => p.title.toLowerCase() === userDetails.profession.toLowerCase());
