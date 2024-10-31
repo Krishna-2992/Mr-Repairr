@@ -5,6 +5,8 @@ const cors = require('cors')
 require('dotenv').config()
 
 const partnerRoutes = require('./routes/partnerRoutes')
+const queryRoutes = require("./routes/queryRoutes")
+const twilioRoutes = require("./routes/twilioRoutes")
 
 const app = express()
 
@@ -25,6 +27,8 @@ mongoose
   });
 
 app.use('/', partnerRoutes)
+app.use("/", queryRoutes)
+app.use("/", twilioRoutes)
 
 app.listen(port, () => {
   console.log(`App running on port ${port}...`)
