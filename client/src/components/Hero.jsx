@@ -15,7 +15,7 @@ export default function Hero() {
         >
             <div className='text-black'>
                 <h1 className="text-5xl font-bold">Mr. Repairr</h1>
-                <p className="text-xl">One place solution of all your requirements</p>
+                <p className="text-xl">One place solution for all of your requirements</p>
                 <Link to="our-services" smooth={true} duration={500}>
                     <button className='button button-primary p-2 border border-primary rounded-lg bg-green-400 mt-8 p-4 hover:bg-green-600'>
                         <div className='text-xl font-semibold'>Check our services</div>
