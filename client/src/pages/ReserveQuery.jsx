@@ -18,7 +18,7 @@ export default function ReserveQuery() {
     useEffect(() => {
         const fetchQueryDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/queries/${queryId}`);
+                const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/queries/${queryId}`);
                 const data = await response.json();
                 console.log("query details: ", data)
                 setQueryDetails(data);
@@ -44,9 +44,9 @@ export default function ReserveQuery() {
         try {
             const partner = await axios.get(`${import.meta.env.VITE_SERVER_URL}/partners?id=${partnerId}`);
             console.log("partner found: ", partner)
-            const response = await axios.put(`${import.meta.env.VITE_SERVER_URL}/queries/${queryId}`, {
-                reservingPartner: partner.data, // Pass partner details to reserve the query
-            });
+            console.log('partner: ', partner.data[0]);
+            const response = await axios.put(`${import.meta.env.VITE_SERVER_URL}/queries/${queryId}`,
+                { reservingPartner: { _id: partner.data[0]._id } });
 
             if (response.status === 200) {
                 setIsReserved(true); // Set state to true after successful reservation
@@ -90,13 +90,13 @@ export default function ReserveQuery() {
                     {/* Blurred Customer Details Section */}
                     <div className="mb-4">
                         <div className="mb-2">
-                            <strong>Name:</strong>
+                            <strong>Name: </strong>
                             <span style={{ filter: isReserved ? 'none' : 'blur(5px)' }}>
                                 {isReserved ? queryDetails.customerDetails.name : 'John Doe'}
                             </span>
                         </div>
                         <div className="mb-2">
-                            <strong>Contact Number:</strong>
+                            <strong>Contact Number: </strong>
                             <span style={{ filter: isReserved ? 'none' : 'blur(5px)' }}>
                                 {isReserved ? queryDetails.customerDetails.contactNumber : '123-XXXXXXX'}
                             </span>

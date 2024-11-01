@@ -24,9 +24,8 @@ export default function OurServices() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-8">
                 {data.professions.map((profession) => (
-                    <Link to={`/contact-partner?profession=${profession.title}`}>
+                    <Link key={profession.title} to={`/contact-partner?profession=${profession.title}`}>
                         <Card
-                            key={profession.title}
                             image={professionImages[profession.title]}
                             title={profession.title}
                             description={profession.description}
