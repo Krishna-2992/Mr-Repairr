@@ -49,6 +49,7 @@ export default function ContactPartner() {
                 partners: partners
             });
             console.log('Twilio response:', response.data);
+            alert("requests sent to partner, they will connect with you soon!!")
         } catch (error) {
             console.log(error);
         }
